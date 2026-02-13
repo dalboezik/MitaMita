@@ -1,0 +1,47 @@
+#imports
+import disnake
+import config
+from bot_init import bot
+from disnake.ext import commands
+
+class Greeting(commands.Cog):
+    """Grüßt neue Mitglieder"""
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member: disnake.Member):
+
+        FORMATED_GREETING_MESSAGE = config.GRETTING_MESSAGE.format(name=member.mention)
+        
+        # Embed ->
+        embed = disnake.Embed(
+            title=f"Wilkommen, {member.global_name}", 
+            description=f"{FORMATED_GREETING_MESSAGE}"
+        )
+        embed.set_thumbnail(member.default_avatar.url)
+
+        await bot.get_channel(config.GREETING_CHANNEL_ID).send(embed=embed)
+        
+
+        # Container ->
+        # FUNKTIONIERT NICHT!!!
+        '''
+        container = disnake.Container(
+            
+            disnake.ui.TextDisplay(
+                f"Willkommen, {member.global_name}"
+            ),
+            disnake.ui.Thumbnail(
+                member.default_avatar.url
+            ),
+            disnake.ui.TextDisplay(
+                FORMATED_GREETING_MESSAGE
+            )
+        )
+
+        await bot.get_channel(config.GREETING_CHANNEL_ID).send(components=[container])
+        '''
+
+def setup(bot: commands.Bot):
+    bot.add_cog(Greeting(bot))
