@@ -1,9 +1,13 @@
 #imports
-import config
 import disnake
-from bot_init import bot
+
+import config
+
 from disnake.ext import commands
+
+from bot_init import bot
 from utils.delete_chat_history import delete_chat_history
+
 
 class Rules(commands.Cog):
     """Schickt einen Embed mit den Regeln"""

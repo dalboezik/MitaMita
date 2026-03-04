@@ -1,11 +1,15 @@
 #imports
-import config
 import disnake
+
+import config
 import temp
-from bot_init import bot
+
 from disnake.ext import commands
+
+from bot_init import bot
 from Modals.ticket_modal import TicketModal
 from utils.delete_chat_history import delete_chat_history
+
 
 class Ticket(commands.Cog):
     """
@@ -27,7 +31,7 @@ class Ticket(commands.Cog):
 
     @staticmethod
     async def sendTicketEmbed():
-        """Sendet den Ticket-Embed in den Support-Kanal"""
+        """Sendet den Ticket-Embed/Container in den Support-Kanal"""
 
         #Embed ->
         '''
@@ -74,7 +78,10 @@ class Ticket(commands.Cog):
 
     @commands.Cog.listener("on_button_click")
     async def accept_ticket(self, inter: disnake.MessageInteraction):
-        """Erstellt einen neuen Channel mit dem Mod und dem Ticketauthor und ändert den Ticketstatus"""
+        """
+        Erstellt einen neuen Channel mit dem Mod und dem Ticketauthor 
+        und ändert den Ticketstatus.
+        """
         if inter.component.custom_id == "accept_ticket":
             await inter.response.defer(ephemeral=True)
 

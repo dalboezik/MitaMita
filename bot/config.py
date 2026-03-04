@@ -3,6 +3,8 @@ import dotenv
 import os
 import json
 
+#-Setup-bot---->
+
 #load dotenv
 dotenv.load_dotenv()
 
@@ -12,11 +14,13 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 #Paths
 COGS_PATH = "./Cogs"
 
+#-Setup-server--->
+
 #Roles
 MOD_ROLE_ID = 1455553092350120121
 MEMBER_ROLE_ID = 1452615315627311114
 
-#Cogs --->
+#-Cogs--->
 
 #Ping
 PING_ENABLE = True

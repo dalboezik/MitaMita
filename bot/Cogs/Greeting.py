@@ -1,8 +1,12 @@
 #imports
 import disnake
+
 import config
-from bot_init import bot
+
 from disnake.ext import commands
+
+from bot_init import bot
+
 
 class Greeting(commands.Cog):
     """Grüßt neue Mitglieder"""

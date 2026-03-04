@@ -1,7 +1,9 @@
 # imports
 import disnake
-from bot_init import bot
+
 from disnake.ext import commands
+
+from bot_init import bot
 from Modals.Moderation.kick_modal import KickModal
 from Modals.Moderation.ban_modal import BanModal
 from Modals.Moderation.timeout_modal import TimeoutModal

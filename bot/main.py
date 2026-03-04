@@ -1,7 +1,8 @@
 #imports
-import config
 import disnake
-import os
+
+import config
+
 from bot_init import bot
 from Cogs.Rules import Rules
 from Cogs.Ticket import Ticket

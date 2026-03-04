@@ -1,7 +1,10 @@
 # imports
 import disnake
-from bot_init import bot
+
 from disnake.ext import commands
+
+from bot_init import bot
+
 
 class Ping(commands.Cog):
     def __init__(self, bot: commands.Bot):
