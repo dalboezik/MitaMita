@@ -32,7 +32,7 @@ GREETING_CHANNEL_ID = 1452256326339264564
 GRETTING_MESSAGE = """Schön, dass du da bist {name}""" #name = Name von dem Member, der beigetrtten ist
 
 #Ticket
-TICKET_ENABLE = False
+TICKET_ENABLE = True
 TICKET_CATEGORY_NAME = "tickets"
 TICKET_CHANNEL_ID = 1452602694404407499
 TICKET_MESSAGE = """Wenn du eine Frage oder ein Problem hast, kannst du einen Ticket erstellen."""
@@ -62,3 +62,4 @@ MODERATION_ENABLE = True
 
 #Create Embed
 CREATEEMBED_ENABLE = True
+CREATEEMBED_CHANNLE_ID = 1479132341644427406
