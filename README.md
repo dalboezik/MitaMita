@@ -148,7 +148,7 @@ Install them with:
 ---
 
 # Troubleshooting
-**Bot does not start**
+**Bot does not start** \n
 check:
 - ``.env`` exists
 - ``BOT_TOKEN`` is correct
