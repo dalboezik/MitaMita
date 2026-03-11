@@ -155,7 +155,8 @@ check:
 - python version is compatible
 
 **Slash commands not appearing** <br>
-Try syncing commands or reinviting the bot with the correct scopes:
+Try syncing commands or reinviting the bot with the correct scopes: <br>
+
     applications.commands
     bot
 
