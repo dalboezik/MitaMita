@@ -148,13 +148,13 @@ Install them with:
 ---
 
 # Troubleshooting
-**Bot does not start** \n
+**Bot does not start** <br>
 check:
 - ``.env`` exists
 - ``BOT_TOKEN`` is correct
 - python version is compatible
 
-**Slash commands not appearing**
+**Slash commands not appearing** <br>
 Try syncing commands or reinviting the bot with the correct scopes:
     applications.commands
     bot
