@@ -58,6 +58,7 @@ The project is organized using a Cog-based architecture, making it easy to expan
 ---
 
 # Project Structure
+```
 bot/
 │
 ├── main.py                # Entry point for the bot
@@ -88,6 +89,7 @@ bot/
 │
 ├── Rules.json             # Server rules configuration
 └── .env                   # Environment variables
+```
 
 ---
 
