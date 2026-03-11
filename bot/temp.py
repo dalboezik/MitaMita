@@ -1,4 +1,4 @@
-"""Temporäre Daten & Metadaten"""
+"""Temporary data and metadata"""
 
 '''
 ticket_context = {
@@ -10,6 +10,7 @@ ticket_context = {
 }
 '''
 ticket_context: dict[dict] = {}
+
 '''
 voice_channels = {
     int(<voice_channel_id>): disnake.Member(<voice_channel_author>)

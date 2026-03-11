@@ -26,16 +26,16 @@ MEMBER_ROLE_ID = 1452615315627311114
 PING_ENABLE = True
 
 #Greeting
-#Neue Mitglieder mit einem Embed grüßen
+#Greetings new members
 GREETING_ENABLE = True
 GREETING_CHANNEL_ID = 1452256326339264564
-GRETTING_MESSAGE = """Schön, dass du da bist {name}""" #name = Name von dem Member, der beigetrtten ist
+GRETTING_MESSAGE = """Nice to see you {name}""" #name = The name of the new member
 
 #Ticket
-TICKET_ENABLE = True
+TICKET_ENABLE = False
 TICKET_CATEGORY_NAME = "tickets"
 TICKET_CHANNEL_ID = 1452602694404407499
-TICKET_MESSAGE = """Wenn du eine Frage oder ein Problem hast, kannst du einen Ticket erstellen."""
+TICKET_MESSAGE = """If you have a question or problem, you can create a ticket to get help."""
 #Ticket requests
 TICKET_REQUEST_CHANNEL_ID = 1452618589369794743
 SHOW_COMPLETED_TICKETS = True
@@ -51,13 +51,15 @@ REPORT_ENABLE = False
 REPORT_CHANNEL_ID = 1457008744171966536
 
 #Voice Channel
-#Ermöglicht den Mitgliedern, eigene temporäre Voicechannels zu erstellen und die zu verwalten
+#Allows the members to create temporary voice channels and manage them
 VOICECHANNEL_ENABLE = True
-VOICE_CHANNEL_ID = 1460662665507635486 #Voicechannel, mit dem die Mitglieder eigene Voicechannels erstellen können
-VOICE_CHANNEL_CATEGORY_ID = 1452248098222116948 #Kategorie für die Voicechannels von den Mitgliedern
+#The id of the voice channel to create temporary voice channels
+VOICE_CHANNEL_ID = 1460662665507635486
+#The category under which temporary voice channels will be created.
+VOICE_CHANNEL_CATEGORY_ID = 1452248098222116948
 
 #Moderation
-#Commands, wie: /ban, /kick, /timeout
+#Commands like: /ban, /kick, /timeout
 MODERATION_ENABLE = True
 
 #Create Embed

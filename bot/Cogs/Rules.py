@@ -10,7 +10,7 @@ from utils.delete_chat_history import delete_chat_history
 
 
 class Rules(commands.Cog):
-    """Schickt einen Embed mit den Regeln"""
+    """Sends a message with the rules."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -44,14 +44,14 @@ class Rules(commands.Cog):
             for rule in config.RULES_JSON
         ]
 
-        container = disnake.ui.Container(disnake.ui.TextDisplay("## Regeln"), *rules)
+        container = disnake.ui.Container(disnake.ui.TextDisplay("## Rules"), *rules)
 
         await delete_chat_history(config.RULES_CHANNEL_ID)
         await bot.get_channel(config.RULES_CHANNEL_ID).send(
             components=[
                 container,
                 disnake.ui.Button(
-                    label="Einverstanden",
+                    label="Accept",
                     custom_id="accept_rules",
                     style=disnake.ButtonStyle.green
                 )
@@ -60,7 +60,7 @@ class Rules(commands.Cog):
 
     @commands.Cog.listener("on_button_click")
     async def accept_rules(self, inter: disnake.MessageInteraction):
-        """Gibt dem user die member role, wenn er die regeln akzeptiert hat"""
+        """Assign the member role once the user has accepted the rules."""
         await inter.response.defer(ephemeral=True)
 
         if inter.component.custom_id == "accept_rules":

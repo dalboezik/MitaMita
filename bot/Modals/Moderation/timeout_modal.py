@@ -4,11 +4,11 @@ from bot_init import bot
 
 class TimeoutModal(disnake.ui.Modal):
     """
-    Ein Modal-Fenster zur zeitlich begrenzten Stummschaltung (Timeout) eines Mitglieds.
-    
-    Dieses Modal ermöglicht es Moderatoren, eine Dauer in Minuten sowie einen 
-    Grund anzugeben. Die Eingabe der Dauer wird validiert, um sicherzustellen, 
-    dass sie in ein numerisches Format umgewandelt werden kann.
+    A modal window for timing out a member.
+
+    This modal allows moderators to specify a duration in minutes and a reason. 
+    The duration input is validated to ensure it can be converted to a 
+    numeric format.
 
     Attributes:
         member (disnake.Member): Das Mitglied, das stummgeschaltet werden soll.
@@ -19,35 +19,35 @@ class TimeoutModal(disnake.ui.Modal):
     def __init__(self, member: disnake.Member):
         components = [
             disnake.ui.TextInput(
-                label="Dauer (in Minuten)",
+                label="Duration (Min)",
                 custom_id="duration",
                 value="5"
             ),
             disnake.ui.TextInput(
-                label="Grund",
+                label="Reason",
                 custom_id="reason",
                 style=disnake.TextInputStyle.paragraph,
-                value="Unangemessenes Verhalten"
+                value="Inappropriate behavior"
             )
         ]
         self.member = member
 
-        super().__init__(title=f"{self.member.global_name} timeouten", components=components)
+        super().__init__(title=f"Timing out {self.member.global_name}", components=components)
 
     
     async def callback(self, inter: disnake.ModalInteraction):
         try:
-            #Wenn die eingegebene Dauer höher als 28 Tage ist
-            #(Discord unterstützt einen max. Timeout von 28 Tagen)
+            #If the entered duration is more than 28 days
+            #(Discord supports max. timeout of 28 days)
             if float(inter.text_values.get("duration").replace(",", ".")) > 40320.0:
                 await inter.response.send_message(
-                    "Die eingegebene Dauer ist zu hoch.",
+                    "The entered duration is too high",
                     ephemeral=True,
                     delete_after=5
                 )
                 return
             
-            #Timeout setzen
+            #Setting timeout
             await self.member.timeout(
                 duration=float(inter.text_values.get("duration").replace(",", "."))*60, 
                 reason=inter.text_values.get("reason")
@@ -55,15 +55,15 @@ class TimeoutModal(disnake.ui.Modal):
 
             #Response
             await inter.response.send_message(
-                f"{self.member.global_name} darf {inter.text_values.get("duration")} "+
-                f"Minuten lang über sein Verhalten nachdenken.",
+                f"{self.member.global_name} has been timed out " + 
+                f"for {inter.text_values.get("duration")} minutes.",
                 ephemeral=True,
                 delete_after=5
             )
         except ValueError as err:
-            #Fehlermeldung, wenn in der Dauereingabe Sonderzeichen auftauchen
+            #Error message for invalid characters in the duration input.
             await inter.response.send_message(
-                "Bei der Dauereingabe werden Ganz- oder Kommazahlen erwartet",
+                f"Invalid characters '{inter.text_values.get("duration")}' are not supported.",
                 ephemeral=True,
                 delete_after=8
             )

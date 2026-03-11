@@ -3,6 +3,14 @@ import disnake
 from bot_init import bot
 
 class EmbedInitModal(disnake.ui.Modal):
+    """
+    A modal to initialize an embed:
+    - Prompts the user to enter a title and a description for the embed.
+    - Sends the embed to the temporary embed creation channel with buttons for further editing.
+
+    Attributes:
+        bot (commands.Bot): The instance of the Discord bot.
+    """
     def __init__(self):
         components = [
             disnake.ui.TextInput(
@@ -20,6 +28,8 @@ class EmbedInitModal(disnake.ui.Modal):
         super().__init__(title="Create Embed", components=components)
 
     async def callback(self, inter: disnake.ModalInteraction):
+        """Creates a temporary channel and sends the initial embed."""
+        #Channel creation ->
         cahnnel = await inter.guild.create_text_channel(
             name=inter.text_values.get("embed_title"),
             category=disnake.utils.get(
@@ -33,7 +43,8 @@ class EmbedInitModal(disnake.ui.Modal):
             }
         )
 
-        await cahnnel.send(f"{inter.author.mention}, hier kannst du dein Embed bearbeiten")
+        #Sends the embed to the newly created channel ->
+        await cahnnel.send(f"{inter.author.mention}, you can edit your embed in this channel.")
         await cahnnel.send(
             embed=disnake.Embed(
                 title=inter.text_values.get("embed_title"),
@@ -74,7 +85,7 @@ class EmbedInitModal(disnake.ui.Modal):
         )
 
         await inter.response.send_message(
-            f"In dem Channel <#{cahnnel.id}> kannst du dein Embed bearbeiten.",
+            f"Your embed can be edited in <#{channel.id}>.",
             ephemeral=True,
             delete_after=8
         )

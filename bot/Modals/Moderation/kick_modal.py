@@ -4,11 +4,10 @@ from bot_init import bot
 
 class KickModal(disnake.ui.Modal):
     """
-    Ein modales Dialogfenster zum Kick-Prozess eines Discord-Mitglieds.
+    A modal window for the Discord member kick process.
 
-    Dieses Modal ermöglicht es Administratoren oder Moderatoren, einen Grund für 
-    den Kick anzugeben. Nach dem Absenden wird das Mitglied benachrichtigt 
-    und anschließend vom Server entfernt.
+    This modal allows administrators or moderators to provide a reason for the kick.
+    Upon submission, the member is notified, and subsequently removed from the server..
 
     Attributes:
         member (disnake.Member): Das Mitglied, das gekickt werden soll.
@@ -19,10 +18,10 @@ class KickModal(disnake.ui.Modal):
     def __init__(self, member: disnake.Member):
         components = [
             disnake.ui.TextInput(
-                label="Grund",
+                label="Reason",
                 custom_id="reason",
                 style=disnake.TextInputStyle.paragraph,
-                value="Unangemessenes Verhalten"
+                value="Inappropriate behavior"
             )
         ]
         self.member = member
@@ -31,18 +30,18 @@ class KickModal(disnake.ui.Modal):
 
 
     async def callback(self, inter: disnake.ModalInteraction):
-        #Mitglied benachrichtigen
+        #Notify the member
         await self.member.send(embed=disnake.Embed(
-            title="Du wurdest gekickt",
-            description=f"**Grund:**\n{inter.text_values.get("reason")}"
+            title="You have been kicked from the server.",
+            description=f"**Reason:**\n{inter.text_values.get("reason")}"
         ))
 
-        #Mitglied kicken
+        #Kick the member
         await self.member.kick()
 
         #Response
         await inter.response.send_message(
-            f"Der Member: **{self.member.global_name}** wurde erfolgreich gekickt.",
+            f"Successfully kicked **{self.member.global_name}**",
             ephemeral=True,
             delete_after=5
         )

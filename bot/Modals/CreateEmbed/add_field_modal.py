@@ -3,6 +3,14 @@ import disnake
 from bot_init import bot
 
 class AddFieldModal(disnake.ui.Modal):
+    """
+    A modal to add custom fields to the embed:
+    - Prompts the user to enter a name, value, and the inline setting (True/False).
+    - Appends the new field to the embed
+
+    Attributes:
+        bot (commands.Bot): The instance of the Discord bot.
+    """
     def __init__(self):
         components = [
             disnake.ui.TextInput(
@@ -26,7 +34,7 @@ class AddFieldModal(disnake.ui.Modal):
         super().__init__(title="Add field", components=components)
 
     async def callback(self, inter: disnake.ModalInteraction):
-
+        """Appends the new field to the embed"""
         embed = inter.message.embeds[0].add_field(
             name=inter.text_values.get("field_name"),
             value=inter.text_values.get("field_value"),
@@ -38,7 +46,7 @@ class AddFieldModal(disnake.ui.Modal):
         )
 
         await inter.response.send_message(
-            "Ein neues Feld wurde erfolgreich hunzugefügt.",
+            "The new field has been successfully added to the embed.",
             ephemeral=True,
             delete_after=5
         )

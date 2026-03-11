@@ -5,12 +5,20 @@ from disnake.ext import commands
 from bot_init import bot
 
 class SelectChannelDropdown(disnake.ui.StringSelect):
+    """
+    A dropdown to select a channel where the embed should be sent:
+    - Promts the user to select a channel.
+    - Sends the embed to the selected channel.
+
+    Attributes:
+        bot (commands.Bot): The instance of the Discord bot.
+    """
     def __init__(self, message: disnake.Message):
         self.message = message
         options = [channel.name for channel in bot.guilds[0].channels]
 
         super().__init__(
-            placeholder="wähle ein channel", 
+            placeholder="Select a channel", 
             min_values=1, 
             max_values=1, 
             options=options
@@ -18,18 +26,22 @@ class SelectChannelDropdown(disnake.ui.StringSelect):
 
 
     async def callback(self, inter: disnake.MessageInteraction):
+        """Sends the embed to the selected channel."""
         for channel in bot.guilds[0].channels:
             if channel.name == self.values[0]:
                 await bot.get_channel(channel.id).send(embed=self.message.embeds[0])
 
-        await inter.response.send_message("Dein Embed wurde erfolgreich erstellt.")
+        #Response ->
+        await inter.response.send_message(
+            f"The embed was successfully sent in the channel {self.values[0]}."
+        )
 
         container = disnake.ui.Container(
-            disnake.ui.TextDisplay("## Fertig?"),
-            disnake.ui.TextDisplay("Wenn du fertig bist, kannst du diesen Channel löschen."),
+            disnake.ui.TextDisplay("## Done?"),
+            disnake.ui.TextDisplay("If you're done, you can delete the temporary channel."),
             disnake.ui.ActionRow(
                 disnake.ui.Button(
-                    label="Löschen", 
+                    label="Delete", 
                     custom_id="delete_channel",
                     style=disnake.ButtonStyle.danger
                 )

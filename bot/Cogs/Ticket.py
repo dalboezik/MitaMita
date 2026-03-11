@@ -13,14 +13,14 @@ from utils.delete_chat_history import delete_chat_history
 
 class Ticket(commands.Cog):
     """
-    Cog zur Verwaltung des Ticket-Systems.
+    Cog for managing the ticket system.
 
-    Diese Klasse steuert den gesamten Lebenszyklus eines Tickets:
-    - Initialisierung des Ticket-Embeds im Support-Kanal.
-    - Verarbeitung von Ticket-Erstellungen via Modals.
-    - Management von Ticket-Anfragen in Moderations-Kanälen.
-    - Dynamische Erstellung privater Text-Kanäle für die Kommunikation.
-    - Abschluss und Archivierung von Tickets inklusive Status-Updates.
+    This class controls the entire lifecycle of a ticket:
+    - Initialization of the ticket creation embed in the support channel.
+    - Processing ticket creations via modals.
+    - Management of ticket requests in moderation channels.
+    - Dynamic creation of private text channels for communication.
+    - Closing and archiving tickets, including status updates.
 
     Attributes:
         bot (commands.Bot): Die Instanz des Discord-Bots.
@@ -31,17 +31,17 @@ class Ticket(commands.Cog):
 
     @staticmethod
     async def sendTicketEmbed():
-        """Sendet den Ticket-Embed/Container in den Support-Kanal"""
+        """Sends a ticket creation embed/container in the support channel"""
 
         #Embed ->
         '''
-        embed = disnake.Embed(title="Ticket erstellen", description=config.TICKET_MESSAGE)
+        embed = disnake.Embed(title="Create a ticket", description=config.TICKET_MESSAGE)
 
         await delete_chat_history(config.TICKET_CHANNEL_ID)
 
         await bot.get_channel(config.TICKET_CHANNEL_ID).send(embed=embed, components=[
             disnake.ui.Button(
-                label="Ticket erstellen",
+                label="Create a ticket",
                 custom_id="create_ticket",
                 style=disnake.ButtonStyle.danger
             )
@@ -51,14 +51,14 @@ class Ticket(commands.Cog):
         # Container ->
         container = disnake.ui.Container(
             disnake.ui.TextDisplay(
-                "## Ticket erstellen"
+                "## Create a ticket"
             ),
             disnake.ui.TextDisplay(
                 f"{config.TICKET_MESSAGE}"
             ),
             disnake.ui.ActionRow(
                 disnake.ui.Button(
-                    label="Ticket erstellen",
+                    label="Create a ticket",
                     custom_id="create_ticket",
                     style=disnake.ButtonStyle.danger
                 )
@@ -71,7 +71,7 @@ class Ticket(commands.Cog):
 
     @commands.Cog.listener("on_button_click")
     async def create_ticket_embed(self, inter: disnake.MessageInteraction):
-        """Erstellt einen neuen Ticket und schickt den in den TICKET_REQUEST_CHANNEL"""
+        """Creates a ticket and post it to the TICKET_REQUEST_CHANNEL"""
         if inter.component.custom_id == "create_ticket":
             await inter.response.send_modal(TicketModal())
 
@@ -79,23 +79,23 @@ class Ticket(commands.Cog):
     @commands.Cog.listener("on_button_click")
     async def accept_ticket(self, inter: disnake.MessageInteraction):
         """
-        Erstellt einen neuen Channel mit dem Mod und dem Ticketauthor 
-        und ändert den Ticketstatus.
+        Creates a temorary channel with the moderator and the ticket author, 
+        and updates the ticket status..
         """
         if inter.component.custom_id == "accept_ticket":
             await inter.response.defer(ephemeral=True)
 
-            # Den Author von dem Ticket als Member bekommen
+            # Get the ticket author
             ticket_author: disnake.Member = inter.guild.get_member(int(
                 inter.message.embeds[0].fields[0].value.split(":")[1][5:-1]
                 )
             )
 
-            # tickets-Kategorie erstellen, falls nicht vorhanden 
+            # Creates a ticket category if it doesn't exist 
             if not disnake.utils.get(inter.guild.categories, name="tickets"):
                 await inter.guild.create_category(name="tickets", position=1)
 
-            # Den ticket-channel mit dem Author und dem Mod erstellen
+            # Creates a temp channel with the mod and the ticket author
             ticket_channel =  await inter.guild.create_text_channel(
                 name=f"{ticket_author.global_name}-ticket", 
                 category=disnake.utils.get(
@@ -110,18 +110,18 @@ class Ticket(commands.Cog):
                 }
             )
 
-            # Den Status von dem Ticket aktualisieren
+            # Updates the status of the ticket in the TICKET_REQUEST_CHANNEL
             inter.message.embeds[0].set_field_at(
                 index=-1,
                 name="",
-                value="**Status:** In Besprechnung",
+                value="**Status:** In Progress",
                 inline=False
             )
 
             await inter.message.delete()
             ticket_embed= await inter.channel.send(embed=inter.message.embeds[0])
 
-            # Die Metadaten von dem Ticket temporär abspeichern
+            #Saves the metadata of the ticket
             temp.ticket_context.update({
                ticket_channel.id: {
                     "ticket_embed": ticket_embed,
@@ -130,16 +130,16 @@ class Ticket(commands.Cog):
                 }
             })
             
-            # Eine Benachrichtigung in den erstellten channel senden
+            # Send a notification to the newly created channel
             # Embed: 
-            #   Der Mod <@Mod> hat Dein Ticket angenommen:
-            #   > Titel: <Titel von dem Ticket>
-            #   > Beschreibung: <Beschreibung von dem Ticket>
-            #   Hier könnt ihr über das Problem sprechen und zu einer Lösung kommen.
+            #   Moderator <@Mod> has accepted your ticket:
+            #   > Title: <Title of the ticket>
+            #   > Description: <Description of the ticket>
+            #   You can now discuss the issue here and work towards a resolution.
             embed = disnake.Embed()
             embed.add_field(
                 name="", 
-                value=f"**Der Mod {inter.author.mention} hat Dein Ticket angenommen:**", 
+                value=f"**Moderator {inter.author.mention} has accepted your ticket:**", 
                 inline=False
             )
 
@@ -148,25 +148,24 @@ class Ticket(commands.Cog):
 
             embed.add_field(
                 name="", 
-                value="Hier könnt ihr über das Problem sprechen und zu einer Lösung konmmen.", 
+                value="You can now discuss the issue here and work towards a resolution.", 
                 inline=False
             )
 
             await ticket_channel.send(ticket_author.mention)
             await ticket_channel.send(embed=embed)
-            #print(f"Anzahl der Mitglieder: {inter.channel.members}")
 
         
     @commands.slash_command(
         name="close-ticket", 
-        description="Schließt das aktuelle Ticket und archiviert den Status."
+        description="Closes the current ticket and archives its status."
     )
     async def close_ticket(self, inter: disnake.CommandInteraction):
-        """Schließt den Ticket und ändert den Status von dem Ticket"""
+        """Closes the current ticket and archives its status."""
         if inter.channel.category.name == config.TICKET_CATEGORY_NAME:
             await inter.channel.set_permissions(inter.author, view_channel=False)
 
-            # Prüfen, ob der Mod den Ticket geschlossen hat
+            # Check if the moderator closed the ticket.
             isMod = False
             for role in inter.author.roles:
                 if role.id == config.MOD_ROLE_ID:
@@ -174,31 +173,33 @@ class Ticket(commands.Cog):
                     break
 
             if isMod:
-                await inter.response.send_message(f"{inter.author.mention} hat den Ticket gechlossen.\n"+
-                "War die Besprechnung hilfreich?", components=[
+                await inter.response.send_message(f"{inter.author.mention} closed the ticket.\n"+
+                "Was this consultation helpful?", components=[
                     disnake.ui.Button(
-                        label="Ja",
+                        label="Yes",
                         custom_id="helpful_ticket",
                         style=disnake.ButtonStyle.green
                     ),
                     disnake.ui.Button(
-                        label="Nein",
+                        label="No",
                         custom_id="unhelpful_ticket",
                         style=disnake.ButtonStyle.danger
                     )       
                 ])
             else:
-                #ändert den Ticketstatus auf "Erledigt"
-                await inter.response.send_message(f"{inter.author.mention} hat den Ticket geschlossen.")
+                #updtaes the ticket status to Closed
+                await inter.response.send_message(f"{inter.author.mention} closed the ticket.")
                 temp.ticket_context[inter.channel.id]["ticket_embed"].embeds[0].set_field_at(
                     index=-1,
                     name="",
-                    value="**Status:** Erledigt",
+                    value="**Status:** Closed",
                     inline=False
                 )
 
+                #deletes the metadata of the ticket from the temp
                 await temp.ticket_context[inter.channel.id]["ticket_embed"].delete()
 
+                #send the updated ticket
                 if config.SHOW_COMPLETED_TICKETS:
                     await bot.get_channel(config.TICKET_REQUEST_CHANNEL_ID).send(
                         embed=temp.ticket_context[inter.channel.id]["ticket_embed"].embeds[0])
@@ -207,24 +208,23 @@ class Ticket(commands.Cog):
                 temp.ticket_context.pop(inter.channel.id)
                 await inter.channel.delete()
 
-            #print(f"Anzahl der Mitglieder: {len(inter.channel.members)}")
         else:
             await inter.response.send_message(
-                "Die Command kann nur in den Tickets benutzt werden.", 
+                "This command can only be used within ticket channels.", 
                 ephemeral=True
             )
 
 
     @commands.Cog.listener("on_button_click")
     async def helpful_ticket(self, inter: disnake.MessageInteraction):
-        """Stellt den Status von dem Ticket auf 'Erledigt' und löscht den Ticket Channel"""
+        """Sets the ticket status to 'Closed' and deletes the ticket channel."""
         if inter.component.custom_id == "helpful_ticket":
             await inter.response.defer(ephemeral=True)
 
             temp.ticket_context[inter.channel.id]["ticket_embed"].embeds[0].set_field_at(
                 index=-1,
                 name="",
-                value="**Status:** Erledigt",
+                value="**Status:** Closed",
                 inline=False
             )
 
@@ -239,14 +239,14 @@ class Ticket(commands.Cog):
 
     @commands.Cog.listener("on_button_click")
     async def unhelpful_ticket(self, inter: disnake.MessageInteraction):
-        """Stellt den Status von dem Ticket auf 'Offen' und löscht den Ticket Channel"""
+        """Sets the ticket status to 'Open' and deletes the temporary ticket channel."""
         if inter.component.custom_id == "unhelpful_ticket":
             await inter.response.defer(ephemeral=True)
 
             temp.ticket_context[inter.channel.id]["ticket_embed"].embeds[0].set_field_at(
                 index=-1,
                 name="",
-                value="**Status:** Offen",
+                value="**Status:** Open",
                 inline=False
             )
 
@@ -255,7 +255,7 @@ class Ticket(commands.Cog):
                 embed=temp.ticket_context[inter.channel.id]["ticket_embed"].embeds[0],
                 components=[
                     disnake.ui.Button(
-                        label="Annehmen",
+                        label="Accept",
                         custom_id="accept_ticket",
                         style=disnake.ButtonStyle.green
                     )

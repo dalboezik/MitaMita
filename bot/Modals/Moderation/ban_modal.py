@@ -4,11 +4,10 @@ from bot_init import bot
 
 class BanModal(disnake.ui.Modal):
     """
-    Ein interaktives Modal-Fenster zur Bestätigung eines Bans.
-    
-    Dieses Modal fragt den Moderator nach einem Grund für den Ban,
-    informiert den betroffenen Nutzer per Privatnachricht und
-    führt anschließend die Sperrung auf dem Server durch.
+    An interactive modal window to confirm a ban.
+
+    This modal prompts the moderator for a reason, notifies the affected 
+    member via direct message, and subsequently executes the ban on the server.
     
     Attributes:
         member (disnake.Member): Das Mitglied, das gebannt werden soll.
@@ -19,32 +18,32 @@ class BanModal(disnake.ui.Modal):
     def __init__(self, member: disnake.Member):
         components = [
             disnake.ui.TextInput(
-                label="Grund",
+                label="Reason",
                 custom_id="reason",
                 style=disnake.TextInputStyle.paragraph,
-                value="Unangemessenes Verhalten"
+                value="Inappropriate behavior"
             )
         ]
         self.member = member
 
-        super().__init__(title=f"{member.global_name} banen", components=components)
+        super().__init__(title=f"Ban {member.global_name}", components=components)
 
     
     async def callback(self, inter: disnake.ModalInteraction):
-        #Mitglied benachrichtigen
+        #Notify the member
         await self.member.send(
             embed=disnake.Embed(
-                title="Du wurdest gebannt",
-                description=f"**Grund:**\n{inter.text_values.get("reason")}"
+                title="You have been banned from the server.",
+                description=f"**Reason:**\n{inter.text_values.get("reason")}"
             )
         )
 
-        #Das Mitglied bannen
+        #Ban the member
         await self.member.ban(reason=inter.text_values.get("reason"))
 
         #Response
         await inter.response.send_message(
-            f"Das Mitglied: **{self.member.global_name}** wurde erfolgreich gebannt.",
+            f"Successfully banned **{self.member.global_name}**.",
             ephemeral=True,
             delete_after=5
         )

@@ -3,6 +3,14 @@ import disnake
 
 
 class RemoveFieldDropdown(disnake.ui.StringSelect):
+    """
+    A dropdown to remove fields:
+    - Prompts the user to select the field that should be deleted.
+    - Deletes the selected field from the embed.
+
+    Attributes:
+        bot (commands.Bot): The instance of the Discord bot.
+    """
 
     def __init__(self, message: disnake.Message):
         self.message = message
@@ -14,10 +22,16 @@ class RemoveFieldDropdown(disnake.ui.StringSelect):
             for field in self.message.embeds[0].fields
         ]
 
-        super().__init__(placeholder="", max_values=1, min_values=1, options=options)
+        super().__init__(
+            placeholder="Select the field that should be removed.", 
+            max_values=1, 
+            min_values=1, 
+            options=options
+        )
 
 
     async def callback(self, inter: disnake.MessageInteraction):
+        """Removes the selected field."""
         await inter.response.defer(ephemeral=True)
 
         for index, value in enumerate(self.message.embeds[0].fields):
@@ -26,7 +40,11 @@ class RemoveFieldDropdown(disnake.ui.StringSelect):
                 break
         
         await self.message.edit(embed=self.message.embeds[0])
-        await inter.followup.send("The field was deleted", ephemeral=True, delete_after=5)       
+        await inter.followup.send(
+            "The field was successfully removed.", 
+            ephemeral=True, 
+            delete_after=5
+        )       
 
 
 class DropDownView(disnake.ui.View):

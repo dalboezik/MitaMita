@@ -1,95 +1,99 @@
 #imports
 import config
+
 import disnake
-from bot_init import bot
+
 from datetime import datetime
 from disnake.ext import commands
 
+from bot_init import bot
+
+
 class TicketModal(disnake.ui.Modal):
     """
-    Ein modales Dialogfenster zur Erfassung von Ticket-Details.
+    A modal dialog for capturing ticket details.
 
-    Dieses Modal wird aufgerufen, wenn ein Benutzer auf 'Ticket erstellen' klickt.
-    Es validiert die Benutzereingaben und leitet die Anfrage an das Moderationsteam weiter.
+    This modal is triggered when a user clicks 'Create Ticket'.
+    It validates user input and forwards the request to the moderation team.
 
-    Eingabefelder:
-        - Titel (TextInput): Kurze Zusammenfassung des Problems.
-        - Beschreibung (TextInput): Detaillierte Erläuterung des Anliegens.
+    Input Fields:
+        - Title (TextInput): A brief summary of the issue.
+        - Description (TextInput): A detailed explanation of the concern.
 
     Workflow:
-        1. Nimmt Benutzereingaben entgegen.
-        2. Erstellt ein strukturiertes Embed mit Metadaten (Author, Zeitstempel, Status).
-        3. Sendet die Anfrage mit einem Interaktions-Button ('Annehmen') in den 
-           konfigurierten Ticket-Request-Kanal.
-        4. Bestätigt dem Benutzer die Erstellung via ephemeral Follow-up.
+        1. Receives user input.
+        2. Creates a structured embed with metadata (author, timestamp, status).
+        3. Sends the request with an interaction button ('Accept') to the 
+        configured ticket request channel.
+        4. Confirms the creation to the user via an ephemeral follow-up.
     """
 
     def __init__(self):
         components = [
             disnake.ui.TextInput(
-                label="Titel",
-                placeholder="Nenne dein Problem",
+                label="Title",
+                placeholder="A brief summary of the issue",
                 max_length=100,
                 custom_id="problem_title",
                 style=disnake.TextInputStyle.short
             ),
             disnake.ui.TextInput(
-                label="Beschreibung",
-                placeholder="Beschreibe dein Problem",
+                label="Description",
+                placeholder="A detailed explanation of the concern",
                 max_length=1000,
                 custom_id="problem_description",
                 style=disnake.TextInputStyle.paragraph
             )
         ]
 
-        super().__init__(title="Ticket erstellen", components=components)
+        super().__init__(title="Create a ticket", components=components)
 
 
     async def callback(self, inter: disnake.ModalInteraction):
-        """Erstellt einen neuen Ticket und schickt den in den TICKET_REQUEST_CHANNEL"""
+        """Creates and sends the ticket to the TICKET_REQUEST_CHANNEL"""
         await inter.response.defer(ephemeral=True)
         
-        #Initialisierung des Embeds
+        #Embed init
         #Embed: 
-        #   Neue Ticketanfrage
-        #   Erstellt von: <@author>
-        #   Thema: <Thema von dem Ticket>
-        #   Beschreibung: <Beschreibung von dem Ticket>
-        #   Status: <Status von dem Ticket (Offen, In Besprechung, Erledigt)>
+        #   New ticket
+        #   Created by: <@author>
+        #   Subject: <Title of the ticket>
+        #   Description: <Description of the ticket>
+        #   Status: <Status of the ticket (Open, In Progress, Closed)>
         #   <timestamp>
-        embed = disnake.Embed(title="Neue Ticketanfrage", timestamp=datetime.now())
-        embed.add_field(name="", value=f"**Erstellt von:** {inter.author.mention}", inline=False)
+        embed = disnake.Embed(title="New Ticket", timestamp=datetime.now())
+        embed.add_field(name="", value=f"**Created by:** {inter.author.mention}", inline=False)
 
         embed.add_field(
             name="", 
-            value=f"**Thema:** {inter.text_values.get("problem_title")}", 
+            value=f"**Subject:** {inter.text_values.get("problem_title")}", 
             inline=False
         )
 
         embed.add_field(
             name="", 
-            value=f"**Beschreibung:** {inter.text_values.get("problem_description")}", 
+            value=f"**Description:** {inter.text_values.get("problem_description")}", 
             inline=False
         )
 
-        embed.add_field(name="", value="**Status:** Offen", inline=False)
+        embed.add_field(name="", value="**Status:** Open", inline=False)
 
-        # Abschicken des Embeds
+        # Send the embed
         TICKET_REQUEST_CHANNEL = bot.get_channel(config.TICKET_REQUEST_CHANNEL_ID)
 
         if not TICKET_REQUEST_CHANNEL == None:
             await TICKET_REQUEST_CHANNEL.send(embed=embed, components=[
                 disnake.ui.Button(
-                    label="Annehmen",
+                    label="Accept",
                     custom_id="accept_ticket",
                     style=disnake.ButtonStyle.green
                 )
             ])
 
-            await inter.followup.send("Dein Ticket wurde erfolgreich erstellt.", delete_after=8)
+            await inter.followup.send("Your ticket has been successfully created.", delete_after=8)
         else:
-            print("Der Channel mit der ID:'TICKET_REQUEST_CHANNEL_ID' konnte nicht gefunden werden")
+            print("Couldn't find the channel with the id: 'TICKET_REQUEST_CHANNEL_ID'.")
             await inter.followup.send(
-                "Der Ticket-Anfrage-Chnannel konnte nicht gefunden werden," +
-                "bitte kontaktiere die Admins, um das Problem zu beheben."
+                "The ticket-request-channel could not be found." +
+                "Please contact the admins to resolve this problem."
             )

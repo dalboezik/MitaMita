@@ -10,10 +10,10 @@ from Modals.Moderation.timeout_modal import TimeoutModal
 
 class Moderation(commands.Cog):
     """
-    Ein Cog zur Verwaltung von Moderations-Befehlen.
-    
-    Diese Klasse stellt Slash-Commands bereit, die interaktive Modals öffnen,
-    um Nutzer zu kicken, zu bannen oder stummzuschalten (Timeout).
+    A Cog for managing moderation commands.
+
+    This class provides slash commands that trigger interactive modals to 
+    kick, ban, or timeout members.
     """
 
     def __init__(self, bot):
@@ -22,23 +22,23 @@ class Moderation(commands.Cog):
 
     @commands.slash_command(
         name="kick", 
-        description="Kickt den angegebenen User nach Angabe eines Grundes"
+        description="Kicks the selected member after entering the reason."
     )
     async def kick(self, inter: disnake.CommandInteraction, member: disnake.Member):
-        """Öffnet ein Modal, um ein Mitglied vom Server zu kicken."""
+        """Opens a modal to kick the selected member."""
         await inter.response.send_modal(KickModal(member=member))
 
     @commands.slash_command(
         name="ban", 
-        description="Bannt den angegebenen User nach Angabe eines Grundes"
+        description="Bans the selected member after entering the reason."
     )
     async def ban(self, inter: disnake.CommandInteraction, member: disnake.Member):
-        """Öffnet ein Modal, um ein Mitglied dauerhaft vom Server zu bannen."""
+        """Opens a modal to ban the selected member."""
         await inter.response.send_modal(BanModal(member=member))
 
     @commands.slash_command(name="timeout", description="Schickt den ausgewählten User in ein Timeout")
     async def timeout(self, inter: disnake.CommandInteraction, member: disnake.Member):
-        """Öffnet ein Modal, um ein Mitglied für einen bestimmten Zeitraum stummzuschalten."""
+        """Opens a modal to timeout a member."""
         await inter.response.send_modal(TimeoutModal(member=member))
 
 
@@ -47,7 +47,7 @@ class Moderation(commands.Cog):
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.errors.MemberNotFound):
             await ctx.send(
-                "Das Mitglied wurde nicht gefunden",
+                "The selected member couldn't be found.",
                 ephemeral=True,
                 delete_after=5
             )
@@ -56,7 +56,7 @@ class Moderation(commands.Cog):
     async def timeout_error(self, ctx, error):
         if isinstance(error, commands.errors.MemberNotFound):
             await ctx.send(
-                "Das Mitglied wurde nicht gefunden",
+                "The selected member couldn't be found",
                 ephemeral=True,
                 delete_after=5
             )

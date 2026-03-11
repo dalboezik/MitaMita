@@ -20,15 +20,15 @@ class Report(commands.Cog):
         await inter.response.defer(ephemeral=True)
         
         embed = disnake.Embed(
-            title="Neuer Report", 
-            description=f"- 👤 **Von:** {inter.author.mention}\n" +
-            f"- 🚫 **Gegen:** {member.mention}\n" +
-            f"- 📍 **Kanal:** {inter.channel.mention}",
+            title="New report", 
+            description=f"- 👤 **From:** {inter.author.mention}\n" +
+            f"- 🚫 **Against:** {member.mention}\n" +
+            f"- 📍 **Channel:** {inter.channel.mention}",
             timestamp=datetime.now()
         )
         embed.add_field(
             name="Details:", 
-            value=f"- 📝 **Grund:** {reason}", #f"- 📝 **Grund:** {reason}\n- ⏰ **Zeitpunkt:** {datetime.now()}",
+            value=f"- 📝 **Reason:** {reason}",
             inline=False
         )
 
@@ -36,16 +36,17 @@ class Report(commands.Cog):
             await bot.get_channel(config.REPORT_CHANNEL_ID).send(embed=embed)
             
             await inter.followup.send(
-                content="Dein Report wurde erfolgreich erstellt.\n" +
-                "Die Mods werden sol schnell wie möglich eingreifen.",
+                content="Your report has been successfully submitted.\n" +
+                "The moderators will take action as soon as possible.",
                 delete_after=8
             )
         else:
-            print("Der Channel mit der ID: 'REPORT_CHANNEL_ID' konnte nicht gefunden werden.")
+            print("The channel with the ID 'REPORT_CHANNEL_ID' could not be found.")
             await inter.followup.send(
-                content="Der Channel mit den Report-Anfragen konnte nicht gefunden werden," + 
-                "bitte kontaktiere die Admins, um das Problem zu beheben."
+                content="The report channel could not be found.\n" + 
+                "Please contact an administrator to resolve this issue."
             )
+
 
 def setup(bot: disnake.Bot):
     bot.add_cog(Report(bot))

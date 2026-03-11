@@ -9,7 +9,7 @@ from bot_init import bot
 
 
 class Greeting(commands.Cog):
-    """Grüßt neue Mitglieder"""
+    """Greets the new members."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -27,25 +27,6 @@ class Greeting(commands.Cog):
 
         await bot.get_channel(config.GREETING_CHANNEL_ID).send(embed=embed)
         
-
-        # Container ->
-        # FUNKTIONIERT NICHT!!!
-        '''
-        container = disnake.Container(
-            
-            disnake.ui.TextDisplay(
-                f"Willkommen, {member.global_name}"
-            ),
-            disnake.ui.Thumbnail(
-                member.default_avatar.url
-            ),
-            disnake.ui.TextDisplay(
-                FORMATED_GREETING_MESSAGE
-            )
-        )
-
-        await bot.get_channel(config.GREETING_CHANNEL_ID).send(components=[container])
-        '''
 
 def setup(bot: commands.Bot):
     bot.add_cog(Greeting(bot))
