@@ -100,13 +100,14 @@ bot/
 Edit the configuration file to match your server:
 
 **Example:**
-
+```
 PING_ENABLE = True
 GREETING_ENABLE = True
 TICKET_ENABLE = False
 VOICECHANNEL_ENABLE = True
 MODERATION_ENABLE = True
 CREATEEMBED_ENABLE = True
+```
 
 **You can also configure:**
 
