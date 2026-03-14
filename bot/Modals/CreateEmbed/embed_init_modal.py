@@ -30,12 +30,8 @@ class EmbedInitModal(disnake.ui.Modal):
     async def callback(self, inter: disnake.ModalInteraction):
         """Creates a temporary channel and sends the initial embed."""
         #Channel creation ->
-        cahnnel = await inter.guild.create_text_channel(
+        channel = await inter.guild.create_text_channel(
             name=inter.text_values.get("embed_title"),
-            category=disnake.utils.get(
-                inter.guild.categories,
-                name="start"
-            ),
             overwrites={
                 inter.guild.default_role: disnake.PermissionOverwrite(view_channel=False),
                 inter.author: disnake.PermissionOverwrite(view_channel=True),
@@ -44,8 +40,8 @@ class EmbedInitModal(disnake.ui.Modal):
         )
 
         #Sends the embed to the newly created channel ->
-        await cahnnel.send(f"{inter.author.mention}, you can edit your embed in this channel.")
-        await cahnnel.send(
+        await channel.send(f"{inter.author.mention}, you can edit your embed in this channel.")
+        await channel.send(
             embed=disnake.Embed(
                 title=inter.text_values.get("embed_title"),
                 description=inter.text_values.get("embed_description")

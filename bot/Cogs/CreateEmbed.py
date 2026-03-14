@@ -36,7 +36,7 @@ class CreateEmbed(commands.Cog):
         """Sends a message with a button to start the embed creation process."""
         channel = bot.get_channel(config.CREATEEMBED_CHANNLE_ID)
         container = disnake.ui.Container(
-            disnake.ui.TextDisplay("## Create Embed"),
+            disnake.ui.TextDisplay("## Create an Embed"),
             disnake.ui.TextDisplay("Here you can create your custom embed."),
             disnake.ui.ActionRow(disnake.ui.Button(
                 label="Create Embed",
@@ -64,49 +64,38 @@ class CreateEmbed(commands.Cog):
 
 
     @commands.Cog.listener("on_button_click")
-    async def set_img(self, inter: disnake.MessageInteraction):
-        """Waits for an image upload from the user and sets it as the embed's image."""
-        def check(m):
-            return m.author == inter.author and m.channel == inter.channel
+    async def set_image_assets(self, inter: disnake.MessageInteraction):
+        """Sets an image or a thumbnail for the embed."""
+        if inter.component.custom_id == "set_img" or inter.component.custom_id == "set_thumbnail":
+            message: disnake.Message
 
-        if inter.component.custom_id == "set_img":
-            message: disnake.Message | None = None
+            await inter.response.send_message("Upload an image.")
 
-            await inter.response.send_message("Upload an image to set as the embed's image.")
-
+            #Waiting for the message with the image
             try:
-                message = await bot.wait_for(event="message", check=check, timeout=30)
+                message = await bot.wait_for(
+                    event="message", 
+                    check=lambda m: m.author == inter.author and m.channel == inter.channel, 
+                    timeout=30
+                )
             except asyncio.TimeoutError:
                 return await inter.followup.send("Time's up!")
 
-            inter.message.embeds[0].set_image(url=message.attachments[0].url)
+            #Set the image
+            if inter.component.custom_id == "set_img":
+                inter.message.embeds[0].set_image(url=message.attachments[0].url)
+            elif inter.component.custom_id == "set_thumbnail":
+                inter.message.embeds[0].set_thumbnail(url=message.attachments[0].url)
 
+            #Editing the embed
             await inter.message.edit(embed=inter.message.embeds[0])
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(0.3)
             await message.delete()
 
-    
-    @commands.Cog.listener("on_button_click")
-    async def set_thumbnail(self, inter: disnake.MessageInteraction):
-        """Waits for an image upload from the user and sets it as the embed's thumbnail."""
-        def check(m):
-            return m.author == inter.author and m.channel == inter.channel
-
-        if inter.component.custom_id == "set_thumbnail":
-            message: disnake.Message | None = None
-
-            await inter.response.send_message("Upload an image to set as the embed's thumbnail.")
-
-            try:
-                message = await bot.wait_for(event="message", check=check, timeout=30)
-            except asyncio.TimeoutError:
-                return await inter.followup.send("Time's up!")
-
-            inter.message.embeds[0].set_thumbnail(url=message.attachments[0].url)
-
-            await inter.message.edit(embed=inter.message.embeds[0])
-            await asyncio.sleep(0.2)
-            await message.delete()
+            #Delete bots message "Upload an image."
+            async for message in inter.channel.history(limit=1):
+                if message.author == bot.user:
+                    await message.delete()
 
 
     @commands.Cog.listener("on_button_click")

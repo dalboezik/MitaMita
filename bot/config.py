@@ -16,6 +16,9 @@ COGS_PATH = "./Cogs"
 
 #-Setup-server--->
 
+#Guilds
+GUILDS = [1452248096883867721]
+
 #Roles
 MOD_ROLE_ID = 1455553092350120121
 MEMBER_ROLE_ID = 1452615315627311114
@@ -43,6 +46,7 @@ SHOW_COMPLETED_TICKETS = True
 #Rules
 RULES_ENABLE = False
 RULES_CHANNEL_ID = 1452359057678794752
+#Load the rules from JSON
 with open("./Rules.json", "r", encoding="UTF-8") as RULES_JSON:
     RULES_JSON = json.load(RULES_JSON)
 
