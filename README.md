@@ -93,6 +93,9 @@ bot/
 
 ---
 
+# Installation
+Clone the reposetory 
+
 # Configuration
 ## 1. Create a ``.env`` file
     BOT_TOKEN=your_discord_bot_token
