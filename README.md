@@ -9,7 +9,7 @@ The project is organized using a Cog-based architecture, making it easy to expan
 # Table of Contents
 - [Features](#features)
 - [Project Structure](#project-structure)
-- *(Installation)*
+- [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Dependencies](#dependencies)
