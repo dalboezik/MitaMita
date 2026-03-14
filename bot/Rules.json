@@ -1,21 +1,21 @@
 [
-    {
-        "title": "Freundlichkeit & Respekt",
-        "description": "- **Netiquette**: Behandle andere so, wie du selbst behandelt werden möchtest. Beleidigungen, Provokationen oder toxisches Verhalten werden nicht toleriert. \n- **Kein Hate Speech**: Diskriminierung jeglicher Art (Rassismus, Sexismus, Homophobie, etc.) führt zum sofortigen Bann. \n- **Konflikte**: Private Streitigkeiten klärt ihr bitte per Privatnachricht (PN) und nicht in den öffentlichen Kanälen."
-    },
-    {
-        "title": "Chat-Disziplin",
-        "description": "- **Themenrelevanz**: Nutze die Kanäle bitte ihrem Zweck entsprechend (z. B. Memes nur in #memes) \n- **Spam vermeiden**: Bitte kein unnötiges Pingen von Teammitgliedern, kein massives Senden von Emojis oder Caps-Lock-Nachrichten. \n- **Sprache**: Die Hauptsprache auf diesem Server ist Deutsch, Russisch, Ukrainisch, Belarussisch (oder Englisch, falls gewünscht)."
-    },
-    {
-        "title": "Sicherheit & Privatsphäre",
-        "description": "- **Datenschutz**: Veröffentliche niemals private Daten (Adressen, Telefonnummern) von dir oder anderen. \n- **NSFW-Inhalte**: Das Posten von pornografischen, gewaltverherrlichenden oder illegalen Inhalten ist streng untersagt. \n- **Werbung**: Eigenwerbung für andere Discord-Server oder soziale Kanäle ist nur nach Absprache mit der Moderation erlaubt."
-    },
-    {
-        "title": "Voice-Channels (VC)",
-        "description": "- **Störgeräusche**: Achte auf eine angemessene Mikrofonqualität. Nutze bei lauten Hintergrundgeräuschen bitte \"Push-to-Talk\". \n- **Stimmenverzerrer**: Der Einsatz von nervigen Soundboards oder Stimmenverzerrern ist untersagt. \n- **Aufnahmen**: Das Aufnehmen von Gesprächen ohne die ausdrückliche Zustimmung aller Beteiligten ist verboten."
-    },
-    {
-        "description": "> _Unwissenheit schützt vor der Strafe NICHT!!!_"
-    }
+  {
+    "title": "Kindness & Respect",
+    "description": "- **Netiquette**: Treat others the same way you want to be treated. Insults, provocations, or toxic behavior will not be tolerated.\n- **No Hate Speech**: Discrimination of any kind (racism, sexism, homophobia, etc.) will result in an immediate ban.\n- **Conflicts**: Please settle private disputes via Private Message (PM) and not in the public channels."
+  },
+  {
+    "title": "Chat Discipline",
+    "description": "- **Topic Relevance**: Please use the channels according to their purpose (e.g., memes only in #memes).\n- **Avoid Spam**: Please do not unnecessarily ping staff members; avoid excessive use of emojis or All-Caps messages.\n- **Language**: The primary language on this server is English."
+  },
+  {
+    "title": "Safety & Privacy",
+    "description": "- **Data Protection**: Never publish private data (addresses, phone numbers) belonging to yourself or others.\n- **NSFW Content**: Posting pornographic, glorifying violence, or illegal content is strictly prohibited.\n- **Advertising**: Self-promotion for other Discord servers or social media channels is only allowed after consulting with the moderation team."
+  },
+  {
+    "title": "Voice Channels (VC)",
+    "description": "- **Background Noise**: Ensure appropriate microphone quality. Please use \"Push-to-Talk\" if you have loud background noise.\n- **Voice Changers**: The use of annoying soundboards or voice changers is prohibited.\n- **Recordings**: Recording conversations without the explicit consent of all participants is forbidden."
+  },
+  {
+    "description": "> _Ignorance of the rules is NO excuse!_"
+  }
 ]
