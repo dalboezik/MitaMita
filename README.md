@@ -9,7 +9,7 @@ The project is organized using a Cog-based architecture, making it easy to expan
 # Table of Contents
 - [Features](#features)
 - [Project Structure](#project-structure)
-- *(Installation)*
+- [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Dependencies](#dependencies)
@@ -93,6 +93,9 @@ bot/
 
 ---
 
+# Installation
+Clone the reposetory 
+
 # Configuration
 ## 1. Create a ``.env`` file
     BOT_TOKEN=your_discord_bot_token
@@ -100,13 +103,14 @@ bot/
 Edit the configuration file to match your server:
 
 **Example:**
-
+```
 PING_ENABLE = True
 GREETING_ENABLE = True
 TICKET_ENABLE = False
 VOICECHANNEL_ENABLE = True
 MODERATION_ENABLE = True
 CREATEEMBED_ENABLE = True
+```
 
 **You can also configure:**
 
@@ -147,14 +151,15 @@ Install them with:
 ---
 
 # Troubleshooting
-**Bot does not start**
+**Bot does not start** <br>
 check:
 - ``.env`` exists
 - ``BOT_TOKEN`` is correct
 - python version is compatible
 
-**Slash commands not appearing**
-Try syncing commands or reinviting the bot with the correct scopes:
+**Slash commands not appearing** <br>
+Try syncing commands or reinviting the bot with the correct scopes: <br>
+
     applications.commands
     bot
 
